@@ -2,8 +2,10 @@
 #define SALE_INVOICE_H
 
 #include <Includes.h>
+#include <General_Documents.h>
+#include <Product.h>
 
-class Sale_Invoice : Document{
+class Sale_Invoice : public Document{
     std::vector<Product> Products;
 public:
     Sale_Invoice(int Code, int Day, int Month, int Year) : Document(Code, Day, Month, Year){}

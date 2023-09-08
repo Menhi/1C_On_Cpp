@@ -2,17 +2,19 @@
 #define PURCHASE_INVOICE_H
 
 #include <Includes.h>
+#include <General_Documents.h>
+#include <Product.h>
 
 class Purchase_Invoice : public Document{
     std::vector<Product> Products;
 public:
     Purchase_Invoice(int Code, int Day, int Month, int Year) : Document(Code, Day, Month, Year){}
-    void setVectorProduct(int spareAmount){
+    void setVectorProduct(int productAmount){
         int tempCode;
         int tempAmount;
         double tempPrice;
 
-        for (int i=0; i<spareAmount; i++){
+        for (int i=0; i<productAmount; i++){
             std::cout<<"Code of spare:";
             std::cin>>tempCode;
             std::cout<<"Amount of spare:";
@@ -25,6 +27,8 @@ public:
     std::vector<Product> getVectorProduct() {return Products;}
 
 };
+
+
 
 
 #endif // PURCHASE_INVOICE_H

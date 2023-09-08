@@ -4,7 +4,10 @@
 
 #include<Includes.h>
 
-
+#include <Product.h>
+#include <Purchase_Invoice.h>
+#include <Sale_Invoice.h>
+#include <General_Documents.h>
 
 void saveProductsToFile( std::vector<Product>& products) {
     std::ofstream outputFile("Products.txt");
@@ -13,7 +16,7 @@ void saveProductsToFile( std::vector<Product>& products) {
             outputFile <<product.getCode()<<" "
                        <<product.getName()<<" "
                        <<product.getAmount()<<" "
-                       <<product.getPrice();
+                       <<product.getPrice()<<"\n";
         outputFile.close();
         std::cout << "Products have been saved to the file." << std::endl;
     } else {
@@ -68,7 +71,7 @@ void savePurchase_InvoicesToFile( std::vector<Purchase_Invoice> &purchase_Invoic
             outputFile <<purchase_Invoice.getCode()<<" "
                        <<purchase_Invoice.getDay()<<" "
                        <<purchase_Invoice.getMonth()<<" "
-                       <<purchase_Invoice.getYear();
+                       <<purchase_Invoice.getYear()<<"\n";
         outputFile.close();
         std::cout << "Purchase_Invoices have been saved to the file." << std::endl;
     } else {
@@ -123,7 +126,7 @@ void saveSale_InvoicesToFile( std::vector<Sale_Invoice>& sale_Invoices) {
             outputFile <<sale_Invoice.getCode()<<" "
                        <<sale_Invoice.getDay()<<" "
                        <<sale_Invoice.getMonth()<<" "
-                       <<sale_Invoice.getYear();
+                       <<sale_Invoice.getYear()<<"\n";
         outputFile.close();
         std::cout << "Sale_Invoices have been saved to the file." << std::endl;
     } else {
@@ -154,13 +157,13 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices)
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
         int Code;
-        std::string Name;
-        int Amount;
-        double Price;
+        int Day;
+        int Month;
+        int Year;
 
 
-        if (iss >> Code >> Name >> Amount >> Price) {
-            sale_Invoices.emplace_back(Code, Name, Amount, Price);
+        if (iss >> Code >> Day >> Month >> Year) {
+            sale_Invoices.emplace_back(Code, Day, Month, Year);
         } else {
             std::cerr << "Error with string: " << line << std::endl;
         }
@@ -168,6 +171,62 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices)
     inputFile.close();
     return 0;
 }
+
+
+
+void saveProductsInPurchase_InvoiceToFile (std::vector<Product>& products) {
+    std::ofstream outputFile("Products_In_Purchase_Invoice.txt");
+    if (outputFile.is_open()) {
+        for (auto& product : products)
+            outputFile <<product.getCode()<<" "
+                       <<product.getName()<<" "
+                       <<product.getAmount()<<" "
+                       <<product.getPrice();
+        outputFile.close();
+        std::cout << "Products_In_Purchase_Invoice have been saved to the file." << std::endl;
+    } else {
+        std::cout << "Unable to open the file for saving Products_In_Purchase_Invoice." << std::endl;
+    }
+}
+
+int loadProductsInPurchase_InvoiceToFile (std::vector<Product> &products)
+{
+    std::ifstream inputFile("Products.txt");
+    if (!inputFile.is_open()) {
+        std::ofstream outputFile("Products.txt");
+        if (!outputFile.is_open()) {
+            std::cerr << "Error 1" << std::endl;
+            return 1;
+        }
+        outputFile << "0 0 0 0\n";
+        outputFile.close();
+
+        inputFile.open("Products.txt");
+        if (!inputFile.is_open()) {
+            std::cerr << "Error 2" << std::endl;
+            return 2;
+        }
+    }
+
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        int Code;
+        std::string Name;
+        int Amount;
+        double Price;
+
+
+        if (iss >> Code >> Name >> Amount >> Price) {
+            products.emplace_back(Code, Name, Amount, Price);
+        } else {
+            std::cerr << "Error with string: " << line << std::endl;
+        }
+    }
+    inputFile.close();
+    return 0;
+}
+
 
 
 #endif // FUNCTIONS_H
