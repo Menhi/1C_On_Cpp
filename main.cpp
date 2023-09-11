@@ -3,7 +3,7 @@
 #include <Purchase_Invoice.h>
 #include <Sale_Invoice.h>
 #include <General_Documents.h>
-#include <Сounterparties.h>
+#include <Counterparties.h>
 
 
 
@@ -15,7 +15,7 @@ int main()
     std::vector<Product> allProducts;
     std::vector<Purchase_Invoice> allPurchase_Invoices;
     std::vector<Sale_Invoice> allSale_Invoices;
-    std::vector<Сounterparty> allCounterparties;
+    std::vector<Counterparty> allCounterparties;
 
     loadProductsFromFile(allProducts);
     loadPurchase_InvoicesFromFile(allPurchase_Invoices);
@@ -78,7 +78,7 @@ int main()
             break;
         case 7:
             std::cout<<"Enter name of Counterparty: ";
-        {std::string tempName;
+            {std::string tempName;
             std::getline(std::cin, tempName);
             allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
             saveCounterpartiesToFile(allCounterparties);

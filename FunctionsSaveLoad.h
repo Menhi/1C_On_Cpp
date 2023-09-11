@@ -8,7 +8,7 @@
 #include <Purchase_Invoice.h>
 #include <Sale_Invoice.h>
 #include <General_Documents.h>
-#include <Сounterparties.h>
+#include <Counterparties.h>
 
 
 void saveProductsToFile( std::vector<Product>& products) {
@@ -230,7 +230,7 @@ int loadProductsInPurchase_InvoiceToFile (std::vector<Product> &products)
 }
 
 
-void saveCounterpartiesToFile( std::vector<Сounterparty>& counterparties) {
+void saveCounterpartiesToFile( std::vector<Counterparty>& counterparties) {
     std::ofstream outputFile("Сounterparties.txt");
     if (outputFile.is_open()) {
         for (auto& counterparty : counterparties)
@@ -244,7 +244,7 @@ void saveCounterpartiesToFile( std::vector<Сounterparty>& counterparties) {
     }
 }
 
-int loadCounterpartiesFromFile(std::vector<Сounterparty>& counterparties)
+int loadCounterpartiesFromFile(std::vector<Counterparty>& counterparties)
 {
     std::ifstream inputFile("Сounterparties.txt");
     if (!inputFile.is_open()) {
@@ -279,6 +279,58 @@ int loadCounterpartiesFromFile(std::vector<Сounterparty>& counterparties)
     inputFile.close();
     return 0;
 }
+
+void saveProductAccountingToFile( std::vector<Product>& productsAccounting, int codeOfDocument, int amountProductsInDocument) {
+    std::ofstream outputFile("Products Accounting.txt");
+    if (outputFile.is_open()) {
+        for (auto& ProductAccounting : productsAccounting)
+            outputFile <<codeOfDocument<<" "
+                       <<ProductAccounting.getCode()<<" "
+                       <<amountProductsInDocument<<"\n";
+        outputFile.close();
+        std::cout << "Products Accounting have been saved to the file." << std::endl;
+    } else {
+        std::cout << "Unable to open the file for saving Products Accounting." << std::endl;
+    }
+}
+
+int loadProductAccountingFromFile(std::vector<Product>& productsAccounting)
+{
+    std::ifstream inputFile("Products Accounting.txt");
+    if (!inputFile.is_open()) {
+        std::ofstream outputFile("Products Accounting.txt");
+        if (!outputFile.is_open()) {
+            std::cerr << "Error 11" << std::endl;
+            return 9;
+        }
+        outputFile << "0 0 0 0\n";
+        outputFile.close();
+
+        inputFile.open("Products Accounting.txt");
+        if (!inputFile.is_open()) {
+            std::cerr << "Error 12" << std::endl;
+            return 10;
+        }
+    }
+
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        int Code;
+        std::string Name;
+        int Discount;
+
+        if (iss >> Code >> Name >> Discount) {
+            counterparties.emplace_back(Code, Name, Discount);
+        } else {
+            std::cerr << "Error with string: " << line << std::endl;
+        }
+    }
+    inputFile.close();
+    return 0;
+}
+
+
 
 
 
