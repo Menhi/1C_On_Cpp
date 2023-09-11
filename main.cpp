@@ -1,27 +1,28 @@
-#include <Includes.h>
-
 #include <Product.h>
 #include <FunctionsSaveLoad.h>
 #include <Purchase_Invoice.h>
 #include <Sale_Invoice.h>
 #include <General_Documents.h>
+#include <Сounterparties.h>
 
 
 
 
 int main()
 {
-    int choice = 0;
+    int choice = -1;
 
     std::vector<Product> allProducts;
     std::vector<Purchase_Invoice> allPurchase_Invoices;
     std::vector<Sale_Invoice> allSale_Invoices;
+    std::vector<Сounterparty> allCounterparties;
 
     loadProductsFromFile(allProducts);
     loadPurchase_InvoicesFromFile(allPurchase_Invoices);
     loadSale_InvoicesFromFile(allSale_Invoices);
+    loadCounterpartiesFromFile(allCounterparties);
 
-    while (choice != 7){
+    while (choice != 0){
         while (1){std::cout<<"What you want to do?\n"
                              "1 - add product\n"
                              "2 - add doc Purchase Invoice\n"
@@ -29,14 +30,15 @@ int main()
                              "4 - show all products\n"
                              "5 - show all doc Purchase Invoice\n"
                              "6 - show all doc Sale Invoice\n"
-                             "7 - save and exit\n";
+                             "7 - add counterparty"
+                             "0 - save and exit\n";
 
             std::cin>>choice;
             std::cin.ignore();
             if (choice > 0 && choice < 8)
                 break;
             else {
-                std::cout<<"Wrong choice. Try again\n";
+                std::cout<<"Wrong choice. Try again\n\n";
             }
         }
 
@@ -73,6 +75,14 @@ int main()
                                                               <<sale_Invoice.getMonth()<< "."
                                                              <<sale_Invoice.getYear()<<std::endl;
             std::cout<<"\n";
+            break;
+        case 7:
+            std::cout<<"Enter name of Counterparty: ";
+        {std::string tempName;
+            std::getline(std::cin, tempName);
+            allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
+            saveCounterpartiesToFile(allCounterparties);
+            std::cout<<"\n";}
             break;
         }
     }

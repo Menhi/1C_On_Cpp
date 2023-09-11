@@ -8,6 +8,7 @@
 #include <Purchase_Invoice.h>
 #include <Sale_Invoice.h>
 #include <General_Documents.h>
+#include <Сounterparties.h>
 
 void saveProductsToFile( std::vector<Product>& products) {
     std::ofstream outputFile("Products.txt");
@@ -219,6 +220,57 @@ int loadProductsInPurchase_InvoiceToFile (std::vector<Product> &products)
 
         if (iss >> Code >> Name >> Amount >> Price) {
             products.emplace_back(Code, Name, Amount, Price);
+        } else {
+            std::cerr << "Error with string: " << line << std::endl;
+        }
+    }
+    inputFile.close();
+    return 0;
+}
+
+
+void saveCounterpartiesToFile( std::vector<Сounterparty>& counterparties) {
+    std::ofstream outputFile("Сounterparties.txt");
+    if (outputFile.is_open()) {
+        for (auto& counterparty : counterparties)
+            outputFile <<counterparty.getCode()<<" "
+                       <<counterparty.getName()<<" "
+                       <<counterparty.getDiscount()<<"\n";
+        outputFile.close();
+        std::cout << "Сounterparties have been saved to the file." << std::endl;
+    } else {
+        std::cout << "Unable to open the file for saving Сounterparties." << std::endl;
+    }
+}
+
+int loadCounterpartiesFromFile(std::vector<Сounterparty>& counterparties)
+{
+    std::ifstream inputFile("Сounterparties.txt");
+    if (!inputFile.is_open()) {
+        std::ofstream outputFile("Сounterparties.txt");
+        if (!outputFile.is_open()) {
+            std::cerr << "Error 9" << std::endl;
+            return 9;
+        }
+        outputFile << "0 0 0 0\n";
+        outputFile.close();
+
+        inputFile.open("Сounterparties.txt");
+        if (!inputFile.is_open()) {
+            std::cerr << "Error 10" << std::endl;
+            return 10;
+        }
+    }
+
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        int Code;
+        std::string Name;
+        int Discount;
+
+        if (iss >> Code >> Name >> Discount) {
+            counterparties.emplace_back(Code, Name, Discount);
         } else {
             std::cerr << "Error with string: " << line << std::endl;
         }

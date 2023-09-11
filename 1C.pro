@@ -12,4 +12,5 @@ HEADERS += \
     Includes.h \
     Product.h \
     Purchase_Invoice.h \
-    Sale_Invoice.h
+    Sale_Invoice.h \
+    Сounterparties.h
