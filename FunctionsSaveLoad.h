@@ -10,6 +10,7 @@
 #include <General_Documents.h>
 #include <Сounterparties.h>
 
+
 void saveProductsToFile( std::vector<Product>& products) {
     std::ofstream outputFile("Products.txt");
     if (outputFile.is_open()) {
