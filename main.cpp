@@ -30,7 +30,8 @@ int main()
                              "4 - show all products\n"
                              "5 - show all doc Purchase Invoice\n"
                              "6 - show all doc Sale Invoice\n"
-                             "7 - add counterparty"
+                             "7 - add counterparty\n"
+                             "8 - show all counterparties\n"
                              "0 - save and exit\n";
 
             std::cin>>choice;
@@ -52,30 +53,36 @@ int main()
             saveProductsToFile(allProducts);
             std::cout<<"\n";}
             break;
+
+
         case 2:
             std::cout<<"2";
             break;
+
+
         case 3:
             std::cout<<"3";
             break;
+
+
         case 4:
             for (auto product : allProducts) std::cout<<product.getCode()<<" "<<product.getName()<< " " <<product.getAmount()<< " " <<product.getPrice()<<std::endl;
             std::cout<<"\n";
             break;
+
+
         case 5:
-            for (auto purchase_Invoice : allPurchase_Invoices) std::cout<<purchase_Invoice.getCode()<<" "
-                                                                       <<purchase_Invoice.getDay()<<"."
-                                                                      <<purchase_Invoice.getMonth()<< "."
-                                                                     <<purchase_Invoice.getYear()<<std::endl;
+            for (auto purchase_Invoice : allPurchase_Invoices) purchase_Invoice.showDocument();
             std::cout<<"\n";
             break;
+
+
         case 6:
-            for (auto sale_Invoice : allSale_Invoices) std::cout<<sale_Invoice.getCode()<<" "
-                                                               <<sale_Invoice.getDay()<<"."
-                                                              <<sale_Invoice.getMonth()<< "."
-                                                             <<sale_Invoice.getYear()<<std::endl;
+            for (auto sale_Invoice : allSale_Invoices) sale_Invoice.showDocument();
             std::cout<<"\n";
             break;
+
+
         case 7:
             std::cout<<"Enter name of Counterparty: ";
             {std::string tempName;
@@ -83,6 +90,10 @@ int main()
             allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
             saveCounterpartiesToFile(allCounterparties);
             std::cout<<"\n";}
+            break;
+
+        case 8:
+            for (auto counterpatry : allCounterparties) counterpatry.showCounterparties();
             break;
         }
     }

@@ -11,7 +11,7 @@
 #include <Counterparties.h>
 
 
-void saveProductsToFile( std::vector<Product>& products) {
+void saveProductsToFile(std::vector<Product>& products) {
     std::ofstream outputFile("Products.txt");
     if (outputFile.is_open()) {
         for (auto& product : products)
@@ -66,7 +66,7 @@ int loadProductsFromFile(std::vector<Product> &products)
 
 
 
-void savePurchase_InvoicesToFile( std::vector<Purchase_Invoice> &purchase_Invoices) {
+void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoices) {
     std::ofstream outputFile("Purchase_Invoices.txt");
     if (outputFile.is_open()) {
         for (auto& purchase_Invoice : purchase_Invoices)
@@ -121,7 +121,7 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
 
 
 
-void saveSale_InvoicesToFile( std::vector<Sale_Invoice>& sale_Invoices) {
+void saveSale_InvoicesToFile(std::vector<Sale_Invoice>& sale_Invoices) {
     std::ofstream outputFile("Sale_Invoices.txt");
     if (outputFile.is_open()) {
         for (auto& sale_Invoice : sale_Invoices)
@@ -230,7 +230,7 @@ int loadProductsInPurchase_InvoiceToFile (std::vector<Product> &products)
 }
 
 
-void saveCounterpartiesToFile( std::vector<Counterparty>& counterparties) {
+void saveCounterpartiesToFile(std::vector<Counterparty>& counterparties) {
     std::ofstream outputFile("Сounterparties.txt");
     if (outputFile.is_open()) {
         for (auto& counterparty : counterparties)
@@ -280,7 +280,8 @@ int loadCounterpartiesFromFile(std::vector<Counterparty>& counterparties)
     return 0;
 }
 
-void saveProductAccountingToFile( std::vector<Product>& productsAccounting, int codeOfDocument, int amountProductsInDocument) {
+
+void saveProductAccountingToFile(std::vector<Purchase_Invoice> &purchase_Invoices, int amountProductsInDocument) {
     std::ofstream outputFile("Products Accounting.txt");
     if (outputFile.is_open()) {
         for (auto& ProductAccounting : productsAccounting)

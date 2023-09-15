@@ -14,6 +14,12 @@ public:
     int getCode() {return code;}
     std::string getName() {return name;}
     int getDiscount() {return discount_Percentage;}
+
+    void showCounterparties() {
+        std::cout<<getCode()<<" "<<getName()<<" "<<getDiscount()<<"%\n";
+    }
+
+
 };
 
 

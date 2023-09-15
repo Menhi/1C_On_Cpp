@@ -24,9 +24,10 @@ public:
             std::cout<<"Price of spare:";
             std::cin>>tempPrice;
             Products.emplace_back(tempCode, "", tempAmount, tempPrice);
-            }
+        }
     }
     std::vector<Product> getVectorProduct() {return Products;}
+
 
 };
 

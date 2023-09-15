@@ -40,6 +40,10 @@ public:
     }
     std::vector<Product> getVectorProduct() {return Products;}
 
+
+
+
+
 };
 
 
