@@ -5,14 +5,14 @@
 #include <General_Documents.h>
 #include <Product.h>
 #include <Counterparties.h>
-#include <FunctionsSaveLoad.h>
 
 class Purchase_Invoice : public Document{
     std::vector<Product> Products;
     Counterparty counterparty;
 public:
     Purchase_Invoice(int Code, int Day, int Month, int Year, Counterparty Counterparty) : Document(Code, Day, Month, Year), counterparty(Counterparty){}
-    void setVectorProduct(int productAmount, std::vector <Product> allProducts){
+
+    void setVectorProduct(int productAmount, std::vector <Product> &allProducts){
         int tempCode;
         int tempAmount;
         double tempPrice;
@@ -26,9 +26,9 @@ public:
             std::cin>>tempPrice;
             if (allProducts[tempCode].getCode() == tempCode){
                 Products.emplace_back(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
-                allProducts[tempCode].setPrice((tempPrice*tempAmount+
-                                                allProducts[tempCode].getAmount()*allProducts[tempCode].getPrice())/
-                                               (tempAmount+allProducts[tempCode].getAmount()));
+
+                allProducts[tempCode].setPrice((tempPrice*tempAmount + allProducts[tempCode].getAmount()*allProducts[tempCode].getPrice())/
+                                                                (tempAmount+allProducts[tempCode].getAmount()));
                 allProducts[tempCode].setAmount(tempAmount+allProducts[tempCode].getAmount());
             }
             else {
@@ -36,11 +36,21 @@ public:
                 i--;
             }
         }
-
     }
+
+    int getCounterpartyCode() {return counterparty.getCode();}
+
+    std::string getCounterpartyName() {return counterparty.getName();}
+
     std::vector<Product> getVectorProduct() {return Products;}
 
-
+    void showDocument (){
+            std::cout<<getCode()<<" "
+                    <<getDay()<<"."
+                   <<getMonth()<< "."
+                  <<getYear()<<" "
+                  <<getCounterpartyName()<<std::endl;
+    }
 
 
 

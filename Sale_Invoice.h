@@ -11,23 +11,45 @@ class Sale_Invoice : public Document{
     Counterparty counterparty;
 public:
     Sale_Invoice(int Code, int Day, int Month, int Year, Counterparty Counterparty) : Document(Code, Day, Month, Year), counterparty(Counterparty){}
-    void setVectorProduct(int spareAmount){
+
+    void setVectorProduct(int productAmount, std::vector <Product> &allProducts){
         int tempCode;
         int tempAmount;
         double tempPrice;
 
-        for (int i=0; i<spareAmount; i++){
-            std::cout<<"Code of spare:";
+        for (int i=0; i<productAmount; i++){
+            std::cout<<"Code of product: ";
             std::cin>>tempCode;
-            std::cout<<"Amount of spare:";
+            std::cout<<"Amount of product: ";
             std::cin>>tempAmount;
-            std::cout<<"Price of spare:";
+            std::cout<<"Price of product: ";
             std::cin>>tempPrice;
-            Products.emplace_back(tempCode, "", tempAmount, tempPrice);
+            if (allProducts[tempCode].getCode() == tempCode){
+                Products.emplace_back(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
+                allProducts[tempCode].setPrice((tempPrice*tempAmount+
+                                                allProducts[tempCode].getAmount()*allProducts[tempCode].getPrice())/
+                                               (tempAmount+allProducts[tempCode].getAmount()));
+                allProducts[tempCode].setAmount(tempAmount+allProducts[tempCode].getAmount());
+            }
+            else {
+                std::cout<<"Wrong code. Try again\n\n";
+                i--;
+            }
         }
     }
+    int getCounterpartyCode() {return counterparty.getCode();}
+
+    std::string getCounterpartyName() {return counterparty.getName();}
+
     std::vector<Product> getVectorProduct() {return Products;}
 
+    void showDocument (){
+            std::cout<<getCode()<<" "
+                    <<getDay()<<"."
+                   <<getMonth()<< "."
+                  <<getYear()<<" "
+                  <<getCounterpartyName()<<std::endl;
+    }
 
 };
 

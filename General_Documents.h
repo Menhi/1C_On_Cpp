@@ -21,13 +21,6 @@ public:
     int getMonth(){return month;}
     int getYear(){return year;}
 
-    void showDocument (){
-            std::cout<<getCode()<<" "
-                    <<getDay()<<"."
-                   <<getMonth()<< "."
-                  <<getYear()<<std::endl;
-    }
-
 };
 
 

@@ -73,7 +73,8 @@ void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoice
             outputFile <<purchase_Invoice.getCode()<<" "
                        <<purchase_Invoice.getDay()<<" "
                        <<purchase_Invoice.getMonth()<<" "
-                       <<purchase_Invoice.getYear()<<"\n";
+                       <<purchase_Invoice.getYear()<<" "
+                       <<purchase_Invoice.getCounterpartyCode()<<"\n";
         outputFile.close();
         std::cout << "Purchase_Invoices have been saved to the file." << std::endl;
     } else {
@@ -81,7 +82,7 @@ void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoice
     }
 }
 
-int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoices)
+int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Counterparty> allCounterparties)
 {
     std::ifstream inputFile("Purchase_Invoices.txt");
     if (!inputFile.is_open()) {
@@ -90,7 +91,7 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
             std::cerr << "Error 3" << std::endl;
             return 3;
         }
-        outputFile << "0 0 0 0\n";
+        outputFile << "0 0 0 0 0\n";
         outputFile.close();
 
         inputFile.open("Purchase_Invoices.txt");
@@ -103,16 +104,17 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
     std::string line;
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
-        int Code;
-        int Day;
-        int Month;
-        int Year;
+        int Code = 0;
+        int Day = 0;
+        int Month = 0;
+        int Year = 0;
+        int CounterpartyCode = 0;
 
 
-        if (iss >> Code >> Day >> Month >> Year) {
-            purchase_Invoices.emplace_back(Code, Day, Month, Year);
+        if (iss >> Code >> Day >> Month >> Year >> CounterpartyCode) {
+            purchase_Invoices.emplace_back(Code, Day, Month, Year, allCounterparties[CounterpartyCode]);
         } else {
-            std::cerr << "Error with string: " << line << std::endl;
+            std::cerr << "Purchase_Invoices: Error with string: " << line << std::endl;
         }
     }
     inputFile.close();
@@ -128,7 +130,8 @@ void saveSale_InvoicesToFile(std::vector<Sale_Invoice>& sale_Invoices) {
             outputFile <<sale_Invoice.getCode()<<" "
                        <<sale_Invoice.getDay()<<" "
                        <<sale_Invoice.getMonth()<<" "
-                       <<sale_Invoice.getYear()<<"\n";
+                       <<sale_Invoice.getYear()<<" "
+                       <<sale_Invoice.getCounterpartyCode()<<"\n";
         outputFile.close();
         std::cout << "Sale_Invoices have been saved to the file." << std::endl;
     } else {
@@ -136,7 +139,7 @@ void saveSale_InvoicesToFile(std::vector<Sale_Invoice>& sale_Invoices) {
     }
 }
 
-int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices)
+int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Counterparty> allCounterparties)
 {
     std::ifstream inputFile("Sale_Invoices.txt");
     if (!inputFile.is_open()) {
@@ -145,7 +148,7 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices)
             std::cerr << "Error 5" << std::endl;
             return 5;
         }
-        outputFile << "0 0 0 0\n";
+        outputFile << "0 0 0 0 0\n";
         outputFile.close();
 
         inputFile.open("Sale_Invoice.txt");
@@ -158,14 +161,15 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices)
     std::string line;
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
-        int Code;
-        int Day;
-        int Month;
-        int Year;
+        int Code = 0;
+        int Day = 0;
+        int Month = 0;
+        int Year = 0;
+        int CounterpartyCode = 0;
 
 
-        if (iss >> Code >> Day >> Month >> Year) {
-            sale_Invoices.emplace_back(Code, Day, Month, Year);
+        if (iss >> Code >> Day >> Month >> Year >> CounterpartyCode) {
+            sale_Invoices.emplace_back(Code, Day, Month, Year, allCounterparties[CounterpartyCode]);
         } else {
             std::cerr << "Error with string: " << line << std::endl;
         }
@@ -281,55 +285,9 @@ int loadCounterpartiesFromFile(std::vector<Counterparty>& counterparties)
 }
 
 
-void saveProductAccountingToFile(std::vector<Purchase_Invoice> &purchase_Invoices, int amountProductsInDocument) {
-    std::ofstream outputFile("Products Accounting.txt");
-    if (outputFile.is_open()) {
-        for (auto& ProductAccounting : productsAccounting)
-            outputFile <<codeOfDocument<<" "
-                       <<ProductAccounting.getCode()<<" "
-                       <<amountProductsInDocument<<"\n";
-        outputFile.close();
-        std::cout << "Products Accounting have been saved to the file." << std::endl;
-    } else {
-        std::cout << "Unable to open the file for saving Products Accounting." << std::endl;
-    }
-}
 
-int loadProductAccountingFromFile(std::vector<Product>& productsAccounting)
-{
-    std::ifstream inputFile("Products Accounting.txt");
-    if (!inputFile.is_open()) {
-        std::ofstream outputFile("Products Accounting.txt");
-        if (!outputFile.is_open()) {
-            std::cerr << "Error 11" << std::endl;
-            return 9;
-        }
-        outputFile << "0 0 0 0\n";
-        outputFile.close();
 
-        inputFile.open("Products Accounting.txt");
-        if (!inputFile.is_open()) {
-            std::cerr << "Error 12" << std::endl;
-            return 10;
-        }
-    }
 
-    std::string line;
-    while (std::getline(inputFile, line)) {
-        std::istringstream iss(line);
-        int Code;
-        std::string Name;
-        int Discount;
-
-        if (iss >> Code >> Name >> Discount) {
-            counterparties.emplace_back(Code, Name, Discount);
-        } else {
-            std::cerr << "Error with string: " << line << std::endl;
-        }
-    }
-    inputFile.close();
-    return 0;
-}
 
 
 
