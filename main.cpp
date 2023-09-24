@@ -5,6 +5,7 @@
 #include <General_Documents.h>
 #include <Counterparties.h>
 #include <windows.h>
+#include <limits>
 
 
 
@@ -81,7 +82,7 @@ int main()
                 std::cin>>tempAmountOfProducts;
                 if (!std::cin >> tempAmountOfProducts){
                     std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     std::cout<<"Wrong value. Try again\n\n";
                 }
             }while (!std::cin >> tempAmountOfProducts);
@@ -114,7 +115,6 @@ int main()
         {std::string tempName;
             std::getline(std::cin, tempName);
             allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
-            saveCounterpartiesToFile(allCounterparties);
             std::cout<<"\n\n";}
             break;
 

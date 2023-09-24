@@ -242,7 +242,7 @@ void saveCounterpartiesToFile(std::vector<Counterparty>& counterparties) {
                        <<counterparty.getName()<<" "
                        <<counterparty.getDiscount()<<"\n";
         outputFile.close();
-        std::cout << "Сounterparties have been saved to the file." << std::endl;
+        std::cout << "Counterparties have been saved to the file." << std::endl;
     } else {
         std::cout << "Unable to open the file for saving Сounterparties." << std::endl;
     }
