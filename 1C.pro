@@ -4,11 +4,15 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Counterparty.cpp \
+        Product.cpp \
+        Purchase_Invoice.cpp \
+        Sale_Invoice.cpp \
+        functions.cpp \
         main.cpp
 
 HEADERS += \
-    Counterparties.h \
-    FunctionsSaveLoad.h \
+    Counterparty.h \
     General_Documents.h \
     Includes.h \
     Product.h \

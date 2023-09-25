@@ -1,5 +1,5 @@
-#ifndef COUNTERPARTIES_H
-#define COUNTERPARTIES_H
+#ifndef COUNTERPARTY_H
+#define COUNTERPARTY_H
 
 
 #include <Includes.h>
@@ -15,7 +15,7 @@ public:
     std::string getName() {return name;}
     int getDiscount() {return discount_Percentage;}
 
-    void showCounterparty() {
+    void show() {
         std::cout<<getCode()<<" "<<getName()<<" "<<getDiscount()<<"%\n";
     }
 

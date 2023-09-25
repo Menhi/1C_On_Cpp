@@ -4,56 +4,29 @@
 #include <Includes.h>
 #include <General_Documents.h>
 #include <Product.h>
-#include <Counterparties.h>
+#include <Counterparty.h>
 
-class Purchase_Invoice : public Document{
-    std::vector<Product> Products;
-    Counterparty counterparty;
+class Purchase_Invoice : public DocumentWithCounterparty{
+    std::vector<Product> products;
 public:
-    Purchase_Invoice(int Code, int Day, int Month, int Year, Counterparty Counterparty) : Document(Code, Day, Month, Year), counterparty(Counterparty){}
+    Purchase_Invoice(int Code, int Day, int Month, int Year, Counterparty Counterparty) : DocumentWithCounterparty(Code, Day, Month, Year, Counterparty){}
 
-    void setVectorProduct(int productAmount, std::vector <Product> &allProducts){
-        int tempCode;
-        int tempAmount;
-        double tempPrice;
+    void addPurchase_Invoice(int productAmount, std::vector <Product> &allProducts, std::vector <Purchase_Invoice> &allPurchase_Invoices);
 
-        for (int i=0; i<productAmount; i++){
-            std::cout<<"Code of product: ";
-            std::cin>>tempCode;
-            std::cout<<"Amount of product: ";
-            std::cin>>tempAmount;
-            std::cout<<"Price of product: ";
-            std::cin>>tempPrice;
-            if (allProducts[tempCode].getCode() == tempCode){
-                Products.emplace_back(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
+    void setProductsLikeVector (std::vector<Product> listOfProduct){products = listOfProduct;}
 
-                allProducts[tempCode].setPrice((tempPrice*tempAmount + allProducts[tempCode].getAmount()*allProducts[tempCode].getPrice())/
-                                                                (tempAmount+allProducts[tempCode].getAmount()));
-                allProducts[tempCode].setAmount(tempAmount+allProducts[tempCode].getAmount());
-            }
-            else {
-                std::cout<<"Wrong code. Try again\n\n";
-                i--;
-            }
-        }
+    void setProductsLikeLine (int Code, std::string Name, int Amount, float Price){
+        Product temp (Code, Name, Amount, Price);
+        products.emplace_back(temp);}
+
+    std::vector<Product> getVectorProduct() {return products;}
+
+    void show (){
+        std::cout<<getCode()<<" ";
+        getCode() > 9 ? std::cout<<getDay() : std::cout<<"0"<<getDay()<<".";
+        getCode() > 9 ? std::cout<<getMonth() : std::cout<<"0"<<getMonth()<<".";
+        std::cout<<getYear()<<" "<<getCounterpartyName()<<std::endl;
     }
-
-    int getCounterpartyCode() {return counterparty.getCode();}
-
-    std::string getCounterpartyName() {return counterparty.getName();}
-
-    std::vector<Product> getVectorProduct() {return Products;}
-
-    void showDocument (){
-            std::cout<<getCode()<<" "
-                    <<getDay()<<"."
-                   <<getMonth()<< "."
-                  <<getYear()<<" "
-                  <<getCounterpartyName()<<std::endl;
-    }
-
-
-
 };
 
 
