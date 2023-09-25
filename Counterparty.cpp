@@ -2,11 +2,14 @@
 #include <Counterparty.h>
 
 void addCounterparty (std::vector <Counterparty> &allCounterparties){
+    system("cls");
     std::cout<<"Enter name of Counterparty: ";
     std::string tempName;
-    std::getline(std::cin, tempName);
+    std::cin >> tempName;
+    std::cin.ignore();
     allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
-    std::cout<<"\n\n";
+    system("cls");
+    std::cout<<"Counterparty saved.\n\n";
 }
 
 void showCounterparties (std::vector <Counterparty> allCounterparties){

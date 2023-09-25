@@ -1,8 +1,9 @@
 #include <Includes.h>
 #include <Sale_Invoice.h>
 #include <Product.h>
-#include <Counterparty.cpp>
 #include <windows.h>
+#include <Counterparty.cpp>
+//#include <limits.h>
 
 void showSaleInvoice (std::vector <Sale_Invoice> allSale_Invoices){
     system("cls");
@@ -39,7 +40,7 @@ void addSale_Invoice(std::vector <Product> &allProducts, std::vector<Counterpart
         std::cin >> tempAmountOfProductsInDoc;
         if (!std::cin >> tempAmountOfProductsInDoc){
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout<<"Wrong value. Try again\n\n";
         }
     }while (!std::cin >> tempAmountOfProductsInDoc);
@@ -72,22 +73,22 @@ void addSale_Invoice(std::vector <Product> &allProducts, std::vector<Counterpart
         }
     }
 
-    allPurchase_Invoices.emplace_back(allPurchase_Invoices.back().getCode()+1, st.wDay, st.wMonth, st.wYear, allCounterparties[tempCounterpartyCode]);
-    allPurchase_Invoices.back().setProductsLikeVector(tempProducts);
+    allSale_Invoices.emplace_back(allSale_Invoices.back().getCode()+1, st.wDay, st.wMonth, st.wYear, allCounterparties[tempCounterpartyCode]);
+    allSale_Invoices.back().setProductsLikeVector(tempProducts);
     system("cls");
     std::cout<<"Purchase invoice saved.\n\n";
 }
 
 
-void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices) {
+void saveSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices) {
     std::ofstream outputFile("Purchase_Invoices.txt");
     if (outputFile.is_open()) {
-        for (auto& purchase_Invoice : purchase_Invoices)
-            outputFile <<purchase_Invoice.getCode()<<" "
-                      <<purchase_Invoice.getDay()<<" "
-                     <<purchase_Invoice.getMonth()<<" "
-                    <<purchase_Invoice.getYear()<<" "
-                   <<purchase_Invoice.getCounterpartyCode()<<"\n";
+        for (auto& sale_Invoice : sale_Invoices)
+            outputFile <<sale_Invoice.getCode()<<" "
+                      <<sale_Invoice.getDay()<<" "
+                     <<sale_Invoice.getMonth()<<" "
+                    <<sale_Invoice.getYear()<<" "
+                   <<sale_Invoice.getCounterpartyCode()<<"\n";
         outputFile.close();
         std::cout << "Purchase_Invoices have been saved to the file." << std::endl;
     } else {
@@ -95,22 +96,22 @@ void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices
     }
 }
 
-int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Counterparty> allCounterparties)
+int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Counterparty> allCounterparties)
 {
-    std::ifstream inputFile("Purchase_Invoices.txt");
+    std::ifstream inputFile("Sale_Invoice.txt");
     if (!inputFile.is_open()) {
-        std::ofstream outputFile("Purchase_Invoices.txt");
+        std::ofstream outputFile("Sale_Invoice.txt");
         if (!outputFile.is_open()) {
             std::cerr << "Error 3" << std::endl;
-            return 3;
+            return 5;
         }
         outputFile << "0 0 0 0 0\n";
         outputFile.close();
 
-        inputFile.open("Purchase_Invoices.txt");
+        inputFile.open("Sale_Invoice.txt");
         if (!inputFile.is_open()) {
             std::cerr << "Error 4" << std::endl;
-            return 4;
+            return 6;
         }
     }
 
@@ -125,9 +126,9 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
 
 
         if (iss >> Code >> Day >> Month >> Year >> CounterpartyCode) {
-            purchase_Invoices.emplace_back(Code, Day, Month, Year, allCounterparties[CounterpartyCode]);
+            sale_Invoices.emplace_back(Code, Day, Month, Year, allCounterparties[CounterpartyCode]);
         } else {
-            std::cerr << "Purchase_Invoices: Error with string: " << line << std::endl;
+            std::cerr << "Sale_Invoices: Error with string: " << line << std::endl;
         }
     }
     inputFile.close();
@@ -135,12 +136,12 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
 }
 
 
-void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices) {
+void saveProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices) {
     std::ofstream outputFile("Products_From_Purchase_Invoices.txt");
     if (outputFile.is_open()) {
-        for (auto& purchase_Invoice : purchase_Invoices){
-            outputFile <<purchase_Invoice.getCode()<<" ";
-            for (auto product : purchase_Invoice.getVectorProduct())
+        for (auto& sale_Invoice : sale_Invoices){
+            outputFile <<sale_Invoice.getCode()<<" ";
+            for (auto product : sale_Invoice.getVectorProduct())
                 outputFile<<product.getCode()<<" "<<product.getName()<<" "<<product.getAmount()<<" "<<product.getPrice()<<"\n";
         }
         outputFile.close();
@@ -151,21 +152,21 @@ void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purch
     }
 }
 
-int loadProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Product> &allProducts)
+int loadProductsFromPurchase_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts)
 {
-    std::ifstream inputFile("Products_From_Purchase_Invoices.txt");
+    std::ifstream inputFile("Products_From_Sale_Invoices.txt");
     if (!inputFile.is_open()) {
-        std::ofstream outputFile("Products_From_Purchase_Invoices.txt");
+        std::ofstream outputFile("Products_From_Sale_Invoices.txt");
         if (!outputFile.is_open()) {
             std::cerr << "Error 9" << std::endl;
-            return 9;
+            return 11;
         }
         outputFile.close();
 
-        inputFile.open("Products_From_Purchase_Invoices.txt");
+        inputFile.open("Products_From_Sale_Invoices.txt");
         if (!inputFile.is_open()) {
             std::cerr << "Error 10" << std::endl;
-            return 10;
+            return 12;
         }
     }
 
@@ -179,9 +180,9 @@ int loadProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purch
         float Price;
 
         if (iss >> DocCode >> ProductCode >> Name >> Amount >> Price) {
-            purchase_Invoices[DocCode].setProductsLikeLine(ProductCode, allProducts[ProductCode].getName(), Amount, Price);
+            sale_Invoices[DocCode].setProductsLikeLine(ProductCode, allProducts[ProductCode].getName(), Amount, Price);
         } else {
-            std::cerr << "Products_From_Purchase_Invoices: Error with string: " << line << std::endl;
+            std::cerr << "Products_From_Sale_Invoices: Error with string: " << line << std::endl;
         }
     }
     inputFile.close();

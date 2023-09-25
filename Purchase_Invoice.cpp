@@ -1,8 +1,8 @@
 #include <Includes.h>
 #include <Purchase_Invoice.h>
 #include <Product.h>
-#include <Counterparty.cpp>
 #include <windows.h>
+#include <Counterparty.cpp>
 
 void showPurchaseInvoice (std::vector <Purchase_Invoice> allPurchase_Invoices){
     system("cls");
@@ -39,7 +39,7 @@ void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counter
         std::cin >> tempAmountOfProductsInDoc;
         if (!std::cin >> tempAmountOfProductsInDoc){
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout<<"Wrong value. Try again\n\n";
         }
     }while (!std::cin >> tempAmountOfProductsInDoc);

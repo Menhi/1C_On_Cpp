@@ -10,7 +10,6 @@
 #include <sstream>
 
 
-
 #endif // INCLUDES_H
 
 

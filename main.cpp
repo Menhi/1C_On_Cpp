@@ -51,7 +51,7 @@ int main()
             break;
 
         case 5:
-            std::cout<<"\n\n";
+            addSale_Invoice(allProducts, allCounterparties, allSale_Invoices);
             break;
 
         case 6:

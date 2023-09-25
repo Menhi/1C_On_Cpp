@@ -9,12 +9,12 @@ class Product{
     int amount;
     float price;
 public:
-    Product (int Code, std::string Name, int Amount, double Price) : code(Code), name(Name), amount(Amount), price(Price){};
+    Product (int Code, std::string Name, int Amount, float Price) : code(Code), name(Name), amount(Amount), price(Price){};
 
     void setCode(int Code){code = Code;}
     void setName(std::string Name){name = Name;}
     void setAmount(int Amount){amount = Amount;}
-    void setPrice(double Price){price = Price;}
+    void setPrice(float Price){price = Price;}
 
     int getCode(){return code;}
     std::string getName(){return name;}
@@ -22,7 +22,7 @@ public:
     float getPrice(){return price;}
 
     void show(){
-        std::cout<<getCode()<<" "<<getName()<< " " <<getAmount()<< " " <<getPrice()<<std::endl;
+        std::cout<<getCode()<<"    "<<getName()<< " " <<getAmount()<< " " <<getPrice()<<std::endl;
     }
 };
 
@@ -67,7 +67,7 @@ int loadProductsFromFile(std::vector<Product> &products)
         int Code;
         std::string Name;
         int Amount;
-        double Price;
+        float Price;
 
 
         if (iss >> Code >> Name >> Amount >> Price) {

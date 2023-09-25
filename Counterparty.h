@@ -16,7 +16,7 @@ public:
     int getDiscount() {return discount_Percentage;}
 
     void show() {
-        std::cout<<getCode()<<" "<<getName()<<" "<<getDiscount()<<"%\n";
+        std::cout<<getCode()<<"    "<<getName()<<" "<<getDiscount()<<"%\n";
     }
 
 
