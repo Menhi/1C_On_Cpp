@@ -1,13 +1,8 @@
 #include <Product.h>
-
 #include <Purchase_Invoice.h>
-
 #include <Sale_Invoice.h>
-
 #include <General_Documents.h>
-
 #include <Counterparty.h>
-
 #include <functions.cpp>
 
 
@@ -23,7 +18,9 @@ int main()
     loadProductsFromFile(allProducts);
     loadCounterpartiesFromFile(allCounterparties);
     loadPurchase_InvoicesFromFile(allPurchase_Invoices, allCounterparties);
+    loadProductsFromPurchase_InvoicesToFile(allPurchase_Invoices, allProducts);
     loadSale_InvoicesFromFile(allSale_Invoices, allCounterparties);
+    loadProductsFromPurchase_InvoicesToFile(allSale_Invoices, allProducts);
 
     unsigned short choice;
     do{
@@ -73,6 +70,8 @@ int main()
 
     saveProductsToFile(allProducts);
     savePurchase_InvoicesToFile(allPurchase_Invoices);
+    saveProductsFromPurchase_InvoicesToFile(allPurchase_Invoices);
+    saveProductsFromSale_InvoicesToFile(allSale_Invoices);
     saveSale_InvoicesToFile(allSale_Invoices);
     saveCounterpartiesToFile(allCounterparties);
     return 0;

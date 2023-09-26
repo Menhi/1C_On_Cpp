@@ -5,18 +5,18 @@
 #include <Counterparty.h>
 
 
-void showPurchaseInvoice (std::vector<Purchase_Invoice>& allPurchase_Invoices){
+void showPurchaseInvoice (std::vector<Purchase_Invoice> allPurchase_Invoices){
     if (allPurchase_Invoices.size() <= 1){
         std::cout<<"You have no Purchase invoices\n";
+        std::cout<<"\n\n";
         return;
     }
-    std::cout<<"Code Date        Counterparty\n";
-    for (auto purchase_Invoice : allPurchase_Invoices){
-        if (purchase_Invoice.getCode() != 0)
-            purchase_Invoice.show();
 
-        std::vector<Product> temp = purchase_Invoice.getVectorProduct();
-        showProduct(temp);
+    for (auto purchase_Invoice : allPurchase_Invoices){
+        if (purchase_Invoice.getCode() != 0){
+            purchase_Invoice.show();
+            std::cout<<"\n";
+        }
     }
     std::cout<<"\n\n";
 }
@@ -57,7 +57,6 @@ void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counter
     int tempCode;
     int tempAmount;
     float tempPrice;
-    std::vector <Product> tempProducts;
     Purchase_Invoice tempPurchase_invoice(allPurchase_Invoices.back().getCode()+1, st.wDay, st.wMonth, st.wYear, allCounterparties[tempCounterpartyCode]);
 
     for (unsigned i=0; i<tempAmountOfProductsInDoc; i++){
@@ -68,30 +67,37 @@ void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counter
         std::cout<<"Price of product "<< i + 1<< ": ";
         std::cin>>tempPrice;
         if (allProducts[tempCode].getCode() == tempCode && tempAmount != 0){
-            tempProducts.emplace_back(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
+            tempPurchase_invoice.setProductsLikeLine(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
         }
         else {
             std::cout<<"Wrong code or amount Try again\n\n";
             i--;
         }
-        std::cout<<"\n\n";
+        std::cout<<"\n";
     }
-    tempPurchase_invoice.setProductsLikeVector(tempProducts);
+
     system("cls");
     std::cout<<"This is your purchase invoice. Save it?\n"
                "1 - yes\n"
-               "any - no\n";
+               "any - no\n\n";
     tempPurchase_invoice.show();
 
     char choice;
     std::cin>>choice;
-    if (choice == '1'){
+    if (choice != '1'){
         system("cls");
+        std::cout<<"Purchase didnt save.\n\n";
         return;
     }
 
-    for (unsigned i = 0; i < tempProducts.size(); i++){
-        allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].setPrice((tempPurchase_invoice.getVectorProduct()[i].getPrice()*tempPurchase_invoice.getVectorProduct()[i].getAmount() +
+    allPurchase_Invoices.emplace_back(tempPurchase_invoice);
+
+    int tempProductCode;
+
+    for (unsigned i = 0; i < tempPurchase_invoice.getVectorProduct().size(); i++){
+        tempProductCode = tempPurchase_invoice.getVectorProduct()[i].getCode();
+
+        allProducts[tempProductCode].setPrice((tempPurchase_invoice.getVectorProduct()[i].getPrice()*tempPurchase_invoice.getVectorProduct()[i].getAmount() +
                                                                                     allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getAmount()*allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getPrice())/
                 (tempPurchase_invoice.getVectorProduct()[i].getAmount()+allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getAmount()));
 
@@ -100,7 +106,6 @@ void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counter
 
 
 
-    allPurchase_Invoices.emplace_back(tempPurchase_invoice);
     system("cls");
     std::cout<<"Purchase invoice saved.\n\n";
 }
@@ -165,10 +170,16 @@ int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoic
 void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices) {
     std::ofstream outputFile("Products_From_Purchase_Invoices.txt");
     if (outputFile.is_open()) {
-        for (auto& purchase_Invoice : purchase_Invoices){
-            outputFile <<purchase_Invoice.getCode()<<" ";
-            for (auto product : purchase_Invoice.getVectorProduct())
-                outputFile<<product.getCode()<<" "<<product.getName()<<" "<<product.getAmount()<<" "<<product.getPrice()<<"\n";
+        for (auto& purchase_Invoice : purchase_Invoices) {
+
+            int Code = purchase_Invoice.getCode();
+
+            if (Code == 0) continue;
+
+            outputFile << Code << " ";
+            for (auto product : purchase_Invoice.getVectorProduct()) {
+                outputFile << product.getCode() << " " << product.getName() << " " << product.getAmount() << " " << product.getPrice() << "\n";
+            }
         }
         outputFile.close();
         std::cout << "Products_From_Purchase_Invoices have been saved to the file." << std::endl;
@@ -177,6 +188,10 @@ void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purch
         std::cout << "Unable to open the file for saving Products_From_Purchase_Invoices." << std::endl;
     }
 }
+
+
+
+
 
 int loadProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Product> &allProducts)
 {

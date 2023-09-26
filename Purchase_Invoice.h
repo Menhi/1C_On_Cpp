@@ -22,10 +22,16 @@ public:
     std::vector<Product> getVectorProduct() {return products;}
 
     void show (){
-        std::cout<<getCode()<<" ";
-        getCode() > 9 ? std::cout<<getDay() : std::cout<<"0"<<getDay()<<".";
-        getCode() > 9 ? std::cout<<getMonth() : std::cout<<"0"<<getMonth()<<".";
+        std::cout<<"Code    Date    Counterparty\n";
+        std::cout<<getCode()<<"    ";
+        getDay() > 9 ? std::cout<<getDay() : std::cout<<"0"<<getDay();
+        std::cout<<".";
+        getMonth() > 9 ? std::cout<<getMonth() : std::cout<<"0"<<getMonth();
+        std::cout<<".";
         std::cout<<getYear()<<" "<<getCounterpartyName()<<std::endl;
+        std::cout<<"Code Name Amount Price\n";
+        for (auto product : this->products)
+            product.show();
     }
 };
 

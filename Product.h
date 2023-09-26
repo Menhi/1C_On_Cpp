@@ -22,7 +22,7 @@ public:
     float getPrice(){return price;}
 
     void show(){
-        std::cout<<getCode()<<" "<<getName()<< " " <<getAmount()<< " " <<getPrice()<<std::endl;
+        std::cout<<getCode()<<"    "<<getName()<< " " <<getAmount()<< " " <<getPrice()<<std::endl;
     }
 };
 
