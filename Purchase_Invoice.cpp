@@ -2,20 +2,26 @@
 #include <Purchase_Invoice.h>
 #include <Product.h>
 #include <windows.h>
-#include <Counterparty.cpp>
+#include <Counterparty.h>
 
-void showPurchaseInvoice (std::vector <Purchase_Invoice> allPurchase_Invoices){
-    system("cls");
+
+void showPurchaseInvoice (std::vector<Purchase_Invoice>& allPurchase_Invoices){
+    if (allPurchase_Invoices.size() <= 1){
+        std::cout<<"You have no Purchase invoices\n";
+        return;
+    }
     std::cout<<"Code Date        Counterparty\n";
     for (auto purchase_Invoice : allPurchase_Invoices){
         if (purchase_Invoice.getCode() != 0)
             purchase_Invoice.show();
-        std::cout<<"Code Name Amount Price\n";
-        for (auto product : purchase_Invoice.getVectorProduct())
-            product.show();
+
+        std::vector<Product> temp = purchase_Invoice.getVectorProduct();
+        showProduct(temp);
     }
     std::cout<<"\n\n";
 }
+
+
 
 
 
@@ -25,55 +31,76 @@ void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counter
 
     unsigned tempCounterpartyCode;
     unsigned tempAmountOfProductsInDoc;
-
     do{
         std::cout<<"Choose and enter code of counterparty or enter 0 for exit\n";
-        showCounterparties(allCounterparties);
+        if (showCounterparties(allCounterparties) == 1)
+            return;
         std::cin>>tempCounterpartyCode;
         if (tempCounterpartyCode == 0) {system("cls"); return;}
         if (tempCounterpartyCode <= 0 || tempCounterpartyCode >= allCounterparties.size()) std::cout<<"Wrong code. Try again\n\n";
     }while (tempCounterpartyCode <= 0 || tempCounterpartyCode >= allCounterparties.size());
 
-    std::cout<<"How many type of products you want to buy?\n";
     do{
+        std::cout<<"How many type of products you want to buy?\n";
         std::cin >> tempAmountOfProductsInDoc;
-        if (!std::cin >> tempAmountOfProductsInDoc){
+        if (!std::cin >> tempAmountOfProductsInDoc || tempAmountOfProductsInDoc == 0 || tempAmountOfProductsInDoc > allProducts.size() - 1){
             std::cin.clear();
-            //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("cls");
             std::cout<<"Wrong value. Try again\n\n";
         }
     }while (!std::cin >> tempAmountOfProductsInDoc);
+
+    std::cout<<"List of products:\n";
+    if (showProduct(allProducts) == 1)
+        return;
 
     int tempCode;
     int tempAmount;
     float tempPrice;
     std::vector <Product> tempProducts;
+    Purchase_Invoice tempPurchase_invoice(allPurchase_Invoices.back().getCode()+1, st.wDay, st.wMonth, st.wYear, allCounterparties[tempCounterpartyCode]);
 
     for (unsigned i=0; i<tempAmountOfProductsInDoc; i++){
-        std::cout<<"Code of product: ";
+        std::cout<<"Code of product "<< i + 1<< ": ";
         std::cin>>tempCode;
-        std::cout<<"Amount of product: ";
+        std::cout<<"Amount of product "<< i + 1<< ": ";
         std::cin>>tempAmount;
-        std::cout<<"Price of product: ";
+        std::cout<<"Price of product "<< i + 1<< ": ";
         std::cin>>tempPrice;
-        if (allProducts[tempCode].getCode() == tempCode){
+        if (allProducts[tempCode].getCode() == tempCode && tempAmount != 0){
             tempProducts.emplace_back(tempCode, allProducts[tempCode].getName(), tempAmount, tempPrice);
-
-            if (allProducts[tempCode].getPrice() != 0)
-                allProducts[tempCode].setPrice((tempPrice*tempAmount + allProducts[tempCode].getAmount()*allProducts[tempCode].getPrice())/
-                                               (tempAmount+allProducts[tempCode].getAmount()));
-            else
-                allProducts[tempCode].setPrice(0);
-            allProducts[tempCode].setAmount(tempAmount+allProducts[tempCode].getAmount());
         }
         else {
-            std::cout<<"Wrong code. Try again\n\n";
+            std::cout<<"Wrong code or amount Try again\n\n";
             i--;
         }
+        std::cout<<"\n\n";
+    }
+    tempPurchase_invoice.setProductsLikeVector(tempProducts);
+    system("cls");
+    std::cout<<"This is your purchase invoice. Save it?\n"
+               "1 - yes\n"
+               "any - no\n";
+    tempPurchase_invoice.show();
+
+    char choice;
+    std::cin>>choice;
+    if (choice == '1'){
+        system("cls");
+        return;
     }
 
-    allPurchase_Invoices.emplace_back(allPurchase_Invoices.back().getCode()+1, st.wDay, st.wMonth, st.wYear, allCounterparties[tempCounterpartyCode]);
-    allPurchase_Invoices.back().setProductsLikeVector(tempProducts);
+    for (unsigned i = 0; i < tempProducts.size(); i++){
+        allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].setPrice((tempPurchase_invoice.getVectorProduct()[i].getPrice()*tempPurchase_invoice.getVectorProduct()[i].getAmount() +
+                                                                                    allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getAmount()*allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getPrice())/
+                (tempPurchase_invoice.getVectorProduct()[i].getAmount()+allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getAmount()));
+
+        allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].setAmount(tempPurchase_invoice.getVectorProduct()[i].getAmount()+allProducts[tempPurchase_invoice.getVectorProduct()[i].getCode()].getAmount());
+    }
+
+
+
+    allPurchase_Invoices.emplace_back(tempPurchase_invoice);
     system("cls");
     std::cout<<"Purchase invoice saved.\n\n";
 }

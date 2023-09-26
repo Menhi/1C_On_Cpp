@@ -21,7 +21,7 @@ int defineChoice (){
 
         std::cin>>choice;
         if (choice >= 0 && choice <= 8)
-            break;
+            return choice;
         else {
             system("cls");
             std::cout<<"Wrong choice. Try again\n\n";

@@ -29,5 +29,18 @@ public:
     }
 };
 
+void showSaleInvoice (std::vector <Sale_Invoice> allSale_Invoices);
+
+void addSale_Invoice(std::vector <Product> &allProducts, std::vector<Counterparty> allCounterparties, std::vector <Sale_Invoice> &allSale_Invoices);
+
+void saveSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices);
+
+int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Counterparty> allCounterparties);
+
+void saveProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices);
+
+int loadProductsFromPurchase_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts);
+
+
 
 #endif // SALE_INVOICE_H

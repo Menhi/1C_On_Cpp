@@ -23,8 +23,13 @@ public:
 
 };
 
+void addCounterparty (std::vector <Counterparty> &allCounterparties);
 
+int showCounterparties (std::vector <Counterparty> allCounterparties);
 
+void saveCounterpartiesToFile(std::vector<Counterparty>& counterparties);
+
+int loadCounterpartiesFromFile(std::vector<Counterparty>& counterparties);
 
 
 #endif // СOUNTERPARTIES_H

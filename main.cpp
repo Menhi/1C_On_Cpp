@@ -1,19 +1,14 @@
 #include <Product.h>
-#include <Product.cpp>
 
 #include <Purchase_Invoice.h>
-#include <Purchase_Invoice.cpp>
 
 #include <Sale_Invoice.h>
-#include <Sale_Invoice.cpp>
 
 #include <General_Documents.h>
 
 #include <Counterparty.h>
-//Counterparty.cpp from Purchase_Invoice.cpp
 
 #include <functions.cpp>
-#include <limits>
 
 
 
@@ -35,34 +30,42 @@ int main()
         choice = defineChoice();
         switch (choice) {
         case 1:
+            system("cls");
             addProduct(allProducts);
             break;
 
         case 2:
+            system("cls");
             showProduct(allProducts);
             break;
 
         case 3:
+            system("cls");
             addPurchase_Invoice(allProducts, allCounterparties, allPurchase_Invoices);
             break;
 
         case 4:
+            system("cls");
             showPurchaseInvoice(allPurchase_Invoices);
             break;
 
         case 5:
+            system("cls");
             addSale_Invoice(allProducts, allCounterparties, allSale_Invoices);
             break;
 
         case 6:
+            system("cls");
             showSaleInvoice(allSale_Invoices);
             break;
 
         case 7:
+            system("cls");
             addCounterparty(allCounterparties);
             break;
 
         case 8:
+            system("cls");
             showCounterparties(allCounterparties);
             break;
         }

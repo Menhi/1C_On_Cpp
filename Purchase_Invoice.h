@@ -29,6 +29,17 @@ public:
     }
 };
 
+void showPurchaseInvoice (std::vector <Purchase_Invoice> allPurchase_Invoices);
+
+void addPurchase_Invoice(std::vector <Product> &allProducts, std::vector<Counterparty> allCounterparties, std::vector <Purchase_Invoice> &allPurchase_Invoices);
+
+void savePurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices);
+
+int loadPurchase_InvoicesFromFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Counterparty> allCounterparties);
+
+void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purchase_Invoices);
+
+int loadProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> &purchase_Invoices, std::vector<Product> &allProducts);
 
 
 

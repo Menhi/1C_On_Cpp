@@ -2,24 +2,31 @@
 #include <Counterparty.h>
 
 void addCounterparty (std::vector <Counterparty> &allCounterparties){
-    system("cls");
     std::cout<<"Enter name of Counterparty: ";
     std::string tempName;
     std::cin >> tempName;
     std::cin.ignore();
-    allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, 0);
+    std::cout<<"Enter discount of Counterparty: ";
+    int tempDiscount;
+    std::cin>>tempDiscount;
+    allCounterparties.emplace_back(allCounterparties.back().getCode()+1, tempName, tempDiscount);
     system("cls");
     std::cout<<"Counterparty saved.\n\n";
 }
 
-void showCounterparties (std::vector <Counterparty> allCounterparties){
-    system("cls");
-    std::cout<<"Code Name    Discount persentage\n";
-    for (auto counterparty : allCounterparties){
-        if (counterparty.getCode() != 0)
-            counterparty.show();
+int showCounterparties (std::vector <Counterparty> allCounterparties){
+    if (allCounterparties.size() != 1){
+        std::cout<<"Code Name    Discount\n";
+        for (auto counterparty : allCounterparties){
+            if (counterparty.getCode() != 0)
+                counterparty.show();
+        }
+        std::cout<<"\n\n";
+        return 0;
     }
+    else std::cout<<"You have no Counterparties\n";
     std::cout<<"\n\n";
+    return 1;
 }
 
 
