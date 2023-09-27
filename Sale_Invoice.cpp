@@ -6,16 +6,16 @@
 
 void showSaleInvoice (std::vector <Sale_Invoice> allSale_Invoices){
     if (allSale_Invoices.size() <= 1){
-        std::cout<<"You have no Purchase invoices\n";
+        std::cout<<"You have no Sale invoices\n";
         std::cout<<"\n\n";
         return;
     }
 
     for (auto sale_Invoice : allSale_Invoices){
-        if (sale_Invoice.getCode() != 0){
-            sale_Invoice.show();
-            std::cout<<"\n";
-        }
+        if (sale_Invoice.getCode() == 0)
+            continue;
+        sale_Invoice.show();
+        std::cout<<"\n";
     }
     std::cout<<"\n\n";
 }
@@ -83,11 +83,12 @@ void addSale_Invoice(std::vector <Product> &allProducts, std::vector<Counterpart
     std::cin>>choice;
     if (choice != '1'){
         system("cls");
-        std::cout<<"Purchase didnt save.\n\n";
+        std::cout<<"Sale didnt save.\n\n";
         return;
     }
 
     allSale_Invoices.emplace_back(tempSale_invoice);
+
 
 
     for (unsigned i = 0; i < tempSale_invoice.getVectorProduct().size(); i++)
@@ -117,9 +118,9 @@ void saveSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices) {
 
 int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Counterparty> allCounterparties)
 {
-    std::ifstream inputFile("Sale_Invoice.txt");
+    std::ifstream inputFile("Sale_Invoices.txt");
     if (!inputFile.is_open()) {
-        std::ofstream outputFile("Sale_Invoice.txt");
+        std::ofstream outputFile("Sale_Invoices.txt");
         if (!outputFile.is_open()) {
             std::cerr << "Error 3" << std::endl;
             return 5;
@@ -127,7 +128,7 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vec
         outputFile << "0 0 0 0 0\n";
         outputFile.close();
 
-        inputFile.open("Sale_Invoice.txt");
+        inputFile.open("Sale_Invoices.txt");
         if (!inputFile.is_open()) {
             std::cerr << "Error 4" << std::endl;
             return 6;
@@ -160,13 +161,10 @@ void saveProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices
     if (outputFile.is_open()) {
         for (auto& sale_Invoice : sale_Invoices) {
 
-            int Code = sale_Invoice.getCode();
+            if (sale_Invoice.getCode() == 0) continue;
 
-            if (Code == 0) continue;
-
-            outputFile << Code << " ";
             for (auto product : sale_Invoice.getVectorProduct()) {
-                outputFile << product.getCode() << " " << product.getName() << " " << product.getAmount() << " " << product.getPrice() << "\n";
+                outputFile << sale_Invoice.getCode() << " " << product.getCode() << " " << product.getName() << " " << product.getAmount() << " " << product.getPrice() << "\n";
             }
         }
         outputFile.close();
@@ -177,7 +175,7 @@ void saveProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices
     }
 }
 
-int loadProductsFromPurchase_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts)
+int loadProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts)
 {
     std::ifstream inputFile("Products_From_Sale_Invoices.txt");
     if (!inputFile.is_open()) {
@@ -212,4 +210,11 @@ int loadProductsFromPurchase_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invo
     }
     inputFile.close();
     return 0;
+}
+
+
+void Sale_Invoice :: setProductCostPrice (std::vector<Product> allProducts, Sale_Invoice saleInvoice){
+    for (unsigned i = 0; i < saleInvoice.getVectorProduct().size(); i++){
+        saleInvoice.productCostPrice[i] = allProducts[saleInvoice.products[i].getCode()].getPrice();
+    }
 }

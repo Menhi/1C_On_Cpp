@@ -15,8 +15,9 @@ int showProduct (std::vector <Product> &allProducts){
     if (allProducts.size() != 1){
         std::cout<<"Code Name Amount Price\n";
         for (auto product : allProducts){
-            if (product.getCode() != 0)
-                product.show();
+            if (product.getCode() == 0)
+                continue;
+            product.show();
         }
         std::cout<<"\n\n";
         return 0;

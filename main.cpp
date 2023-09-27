@@ -18,9 +18,9 @@ int main()
     loadProductsFromFile(allProducts);
     loadCounterpartiesFromFile(allCounterparties);
     loadPurchase_InvoicesFromFile(allPurchase_Invoices, allCounterparties);
-    loadProductsFromPurchase_InvoicesToFile(allPurchase_Invoices, allProducts);
     loadSale_InvoicesFromFile(allSale_Invoices, allCounterparties);
-    loadProductsFromPurchase_InvoicesToFile(allSale_Invoices, allProducts);
+    loadProductsFromPurchase_InvoicesToFile(allPurchase_Invoices, allProducts);
+    loadProductsFromSale_InvoicesToFile(allSale_Invoices, allProducts);
 
     unsigned short choice;
     do{

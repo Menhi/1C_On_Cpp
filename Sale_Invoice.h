@@ -8,6 +8,7 @@
 
 class Sale_Invoice : public DocumentWithCounterparty{
     std::vector<Product> products;
+    std::vector<float> productCostPrice;
 public:
     Sale_Invoice(int Code, int Day, int Month, int Year, Counterparty Counterparty) : DocumentWithCounterparty(Code, Day, Month, Year, Counterparty){}
 
@@ -20,6 +21,8 @@ public:
         products.emplace_back(temp);}
 
     std::vector<Product> getVectorProduct() {return products;}
+
+    void setProductCostPrice (std::vector<Product> allProducts, Sale_Invoice saleInvoice);
 
     void show (){
         std::cout<<"Code    Date    Counterparty\n";
@@ -45,7 +48,7 @@ int loadSale_InvoicesFromFile(std::vector<Sale_Invoice> &sale_Invoices, std::vec
 
 void saveProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> sale_Invoices);
 
-int loadProductsFromPurchase_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts);
+int loadProductsFromSale_InvoicesToFile(std::vector<Sale_Invoice> &sale_Invoices, std::vector<Product> &allProducts);
 
 
 

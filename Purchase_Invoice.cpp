@@ -13,10 +13,10 @@ void showPurchaseInvoice (std::vector<Purchase_Invoice> allPurchase_Invoices){
     }
 
     for (auto purchase_Invoice : allPurchase_Invoices){
-        if (purchase_Invoice.getCode() != 0){
-            purchase_Invoice.show();
-            std::cout<<"\n";
-        }
+        if (purchase_Invoice.getCode() == 0)
+            continue;
+        purchase_Invoice.show();
+        std::cout<<"\n";
     }
     std::cout<<"\n\n";
 }
@@ -172,13 +172,10 @@ void saveProductsFromPurchase_InvoicesToFile(std::vector<Purchase_Invoice> purch
     if (outputFile.is_open()) {
         for (auto& purchase_Invoice : purchase_Invoices) {
 
-            int Code = purchase_Invoice.getCode();
+            if (purchase_Invoice.getCode() == 0) continue;
 
-            if (Code == 0) continue;
-
-            outputFile << Code << " ";
             for (auto product : purchase_Invoice.getVectorProduct()) {
-                outputFile << product.getCode() << " " << product.getName() << " " << product.getAmount() << " " << product.getPrice() << "\n";
+                outputFile << purchase_Invoice.getCode() << " " << product.getCode() << " " << product.getName() << " " << product.getAmount() << " " << product.getPrice() << "\n";
             }
         }
         outputFile.close();
